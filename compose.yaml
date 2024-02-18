@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: gps-front/DOCKERFILE
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+  backend:
+    build:
+      context: .
+      dockerfile: gps-back/DOCKERFILE
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/database
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database
