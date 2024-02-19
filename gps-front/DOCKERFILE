@@ -1,17 +1,9 @@
-# Use a imagem base do Node.js
-FROM node:18.16.1-alpine
+FROM node:18-alpine
 
-# Defina o diretório de trabalho dentro do contêiner
-WORKDIR /app/gps-front
+WORKDIR /app
 
-# Copie o arquivo package.json e o package-lock.json (se existir)
-COPY gps-front/package*.json ./
+COPY . .
 
-# Instale as dependências
 RUN npm install
 
-# Copie os arquivos do frontend para o contêiner
-COPY gps-front/ .
-
-# Comando padrão para iniciar o aplicativo rode o comando npm run dev
 CMD ["npm", "run", "dev"]

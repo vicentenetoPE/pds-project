@@ -2,19 +2,20 @@ version: '3'
 
 services:
   frontend:
+    container_name: gps-front
+    command: sh -c "npm rebuild esbuild && npm run dev"
     build:
-      context: .
-      dockerfile: gps-front/DOCKERFILE
+      context: ./gps-front
     ports:
-      - "5173:5173"
+      - 5173:5173
     depends_on:
       - backend
   backend:
+    container_name: gps-back
     build:
-      context: .
-      dockerfile: gps-back/DOCKERFILE
+      context: ./gps-back
     ports:
-      - "5000:5000"
+      - "5000:3000"
     environment:
       DATABASE_URL: postgres://user:password@db:5432/database
   db:
