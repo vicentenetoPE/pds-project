@@ -7,7 +7,7 @@ services:
     build:
       context: ./gps-front
     ports:
-      - 5173:5173
+      - 5173:3006
     depends_on:
       - backend
   backend:
@@ -16,11 +16,11 @@ services:
       context: ./gps-back
     ports:
       - "5000:3000"
-    environment:
-      DATABASE_URL: postgres://user:password@db:5432/database
   db:
     image: postgres
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: database
+    ports:
+      - "5433:5432"
