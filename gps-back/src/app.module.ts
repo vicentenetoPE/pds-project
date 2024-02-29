@@ -5,8 +5,9 @@ import { UsersModule } from './api/users/users.module';
 import { PGConfig } from './config/database.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { AppService } from './app.service';
 import { AppController } from './app.controller';
+import { AuthGuard } from './api/auth/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -20,8 +21,8 @@ import { AppController } from './app.controller';
     AuthModule,
     UsersModule
   ],
-  providers: [AppService],
   controllers: [AppController],
+
 })
 export class AppModule {
 

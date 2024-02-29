@@ -10,7 +10,7 @@ export async function PGConfig(configService: ConfigService): Promise<TypeOrmMod
     password: configService.get('DATABASE_PASSWORD'),
     database: configService.get('DATABASE_NAME'),
     synchronize: configService.get('IS_TESTING') === 'Y',
-    logging: configService.get('NODE_ENV') !== 'production',
+    //logging: configService.get('NODE_ENV') !== 'production',
     autoLoadEntities: true,
     extra: {
       trustServerCertificate: true,
