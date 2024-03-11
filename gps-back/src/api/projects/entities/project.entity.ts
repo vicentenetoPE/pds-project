@@ -2,7 +2,7 @@ import { Organization } from "src/api/organizations/entities/organization.entity
 import { Task } from "src/api/tasks/entities/task.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('Project')
+@Entity('project')
 export class Project {
     @PrimaryGeneratedColumn()
     id: number;
