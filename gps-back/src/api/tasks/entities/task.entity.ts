@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Project } from 'src/api/projects/entities/project.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity('task')
 export class Task {
@@ -8,4 +9,7 @@ export class Task {
 
   @Column({ length: 120 })
   name: string;
+
+  @ManyToOne(()=> Project, (Project=>Project.tasks))
+  project: Project;
 }

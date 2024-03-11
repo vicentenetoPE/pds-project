@@ -34,4 +34,8 @@ export class UsersService {
         return this.userRepository.update(id, user)
     }
 
+    async findOneById(id:number) {
+        return this.userRepository.findOne({where:{id}});
+    }
+
 }

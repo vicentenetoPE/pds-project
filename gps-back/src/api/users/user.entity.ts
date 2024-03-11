@@ -7,10 +7,13 @@ export class User {
 
   @Column({ length: 500 })
   name: string;
-
   @Column({ length: 500 })
 password: string;
 
+/* 
+  @Column({ length: 120, unique:true })
+email: string;
+*/
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);
   }
