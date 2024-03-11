@@ -5,8 +5,9 @@ import { UsersModule } from './api/users/users.module';
 import { PGConfig } from './config/database.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { AppService } from './app.service';
 import { AppController } from './app.controller';
+import { AuthGuard } from './api/auth/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 import { TasksModule } from './api/tasks/tasks.module';
 import { ProjectsModule } from './api/projects/projects.module';
 import { OrganizationsModule } from './api/organizations/organizations.module';
@@ -26,8 +27,8 @@ import { OrganizationsModule } from './api/organizations/organizations.module';
     ProjectsModule,
     OrganizationsModule
   ],
-  providers: [AppService],
   controllers: [AppController],
+
 })
 export class AppModule {
 
