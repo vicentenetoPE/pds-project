@@ -7,9 +7,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
-import { TasksModule } from './tasks/tasks.module';
-import { ProjectsModule } from './projects/projects.module';
-import { OrganizationsModule } from './organizations/organizations.module';
+import { TasksModule } from './api/tasks/tasks.module';
+import { ProjectsModule } from './api/projects/projects.module';
+import { OrganizationsModule } from './api/organizations/organizations.module';
 
 @Module({
   imports: [
