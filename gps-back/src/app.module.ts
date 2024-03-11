@@ -8,6 +8,9 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AppController } from './app.controller';
 import { AuthGuard } from './api/auth/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { TasksModule } from './api/tasks/tasks.module';
+import { ProjectsModule } from './api/projects/projects.module';
+import { OrganizationsModule } from './api/organizations/organizations.module';
 
 @Module({
   imports: [
@@ -19,7 +22,10 @@ import { APP_GUARD } from '@nestjs/core';
       inject: [ConfigService],
     }),
     AuthModule,
-    UsersModule
+    UsersModule,
+    TasksModule,
+    ProjectsModule,
+    OrganizationsModule
   ],
   controllers: [AppController],
 
