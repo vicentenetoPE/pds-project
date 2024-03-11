@@ -26,4 +26,12 @@ export class UsersService {
         return response
     }
 
+    async delete(id:number){
+        return this.userRepository.delete(id);
+    }
+
+    async update(id:number, user:User){
+        return this.userRepository.update(id, user)
+    }
+
 }
