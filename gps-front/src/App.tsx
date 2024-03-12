@@ -1,10 +1,18 @@
+import { Header } from './components/header'
 import { AppRoutes } from './routes'
+import { PageBody } from './GlobalStyles'
+
 
 function App() {
-  const backendURL = import.meta.env.VITE_BACKEND_API;
-  console.log(backendURL);
+
+
   return (
-    <AppRoutes/>
+    <>
+      <Header/>
+      <PageBody>
+        <AppRoutes/>
+      </PageBody>
+    </>
   )
 }
 

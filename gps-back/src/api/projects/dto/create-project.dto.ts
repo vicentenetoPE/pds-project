@@ -1,1 +1,4 @@
-export class CreateProjectDto {}
+export class CreateProjectDto {
+    id: number;
+    name: string;
+}
