@@ -20,7 +20,6 @@ export const GlobalStyles = createGlobalStyle`
     header {
     grid-area: nav;
     }
-
 `;
 
 export const PageBody = styled.div`

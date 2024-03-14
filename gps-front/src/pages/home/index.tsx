@@ -5,6 +5,7 @@ import { ProjectWrapper } from './styles'
 import { projects } from '../../hooks/useApi/projects'
 import { Project } from '../../models/models/Project'
 import { Filters } from './components/filters'
+import { toast } from 'react-toastify'
 
 export const Home = () => {
   const [myprojects, setMyProjects]= useState<Project[]|null>(null);
@@ -18,8 +19,6 @@ export const Home = () => {
 
   }, [])
   
-
-
   return (
     <div>
       <BreadCrumbs breadcrumbs={null}/>

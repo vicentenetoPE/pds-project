@@ -1,11 +1,12 @@
 import { backEndHTTPClient } from "../../../config/http";
+import { Project } from "../../../models/models/Project";
 
-const resource = "/projects"
+const resource = "/projects/"
 
 export const projects = {
     getOne: async(id:number|string)=>{
         try{
-            const response = await backEndHTTPClient.get(resource+"/"+id);
+            const response = await backEndHTTPClient.get(resource+id);
             return response;
         }catch(e){
             console.log(e);
@@ -23,23 +24,23 @@ export const projects = {
     },
     create:async()=>{
         try{
-            const response = await backEndHTTPClient.get("");
+            const response = await backEndHTTPClient.post(resource);
         }catch(e){
             console.log(e);
             return null;
         }
     },
-    update:async()=>{
+    update:async(id:number|string, params:Project)=>{
         try{
-            const response = await backEndHTTPClient.get("");
+            const response = await backEndHTTPClient.patch(resource+id);
         }catch(e){
             console.log(e);
             return null;
         }
     },
-    delete:async()=>{
+    delete:async(id:number|string)=>{
         try{
-            const response = await backEndHTTPClient.get("");
+            const response = await backEndHTTPClient.delete(resource+id);
         }catch(e){
             console.log(e);
             return null;
