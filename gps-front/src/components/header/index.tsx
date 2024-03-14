@@ -12,11 +12,13 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useNavigate } from 'react-router-dom';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = [{title:'Home', link:'/'}, {title:'Organizações', link:'/organizacoes'},{ title:'Projetos', link:'/projetos'}, {title:'Tarefas', link:'/tarefas'}];
+const settings = ['Perfil', 'Sair'];
 
 export function Header() {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -38,7 +40,7 @@ export function Header() {
   return (
     <AppBar position="static">
       <Container>
-        <Toolbar disableGutters>
+        <Toolbar sx={{width:"100%"}} disableGutters>
           <Typography
             variant="h6"
             noWrap
@@ -56,7 +58,7 @@ export function Header() {
           >
             LOGO
           </Typography>
-
+            {/* Small size */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -87,17 +89,19 @@ export function Header() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem sx={{background: "gray"}} key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem  key={page.title} onClick={()=>{
+                  navigate(page.link)
+                }}>
+                  <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
+          {/* Logo */}
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -111,18 +115,21 @@ export function Header() {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          {/* Large Size */}
+          <Box sx={{ width:"100%",gap:"20px", marginLeft: "100px", display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={page.title}
+                onClick={()=>{
+                  navigate(page.link)
+                }}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.title}
               </Button>
             ))}
           </Box>
-
+          {/* user profile */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

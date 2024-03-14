@@ -3,9 +3,9 @@ import { backEndHTTPClient } from "../../../config/http";
 const resource = "/projects"
 
 export const projects = {
-    getOne: async()=>{
+    getOne: async(id:number|string)=>{
         try{
-            const response = await backEndHTTPClient.get(resource);
+            const response = await backEndHTTPClient.get(resource+"/"+id);
             return response;
         }catch(e){
             console.log(e);
