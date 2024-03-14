@@ -10,32 +10,47 @@ function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
   event.preventDefault();
   console.log("You clicked a breadcrumb.");
 }
-
+//todo refactor
 const getPageName = (breadcrumbs) => {
-  if (breadcrumbs && breadcrumbs.length > 0) return breadcrumbs[breadcrumbs.length - 1];
   return "Projetos";
 };
+type Breadcrumb ={
+  name:string
+  path: string
+}
 
 type Props = {
-  breadcrumbs: any[] | null;
+  breadcrumbs: Breadcrumb[] | null;
 };
 
 export default function BreadCrumbs({ breadcrumbs }: Props) {
   const pageName = getPageName(breadcrumbs);
 
+  const links =()=> breadcrumbs.map((breadcrumb, i)=>{
+    const islast = i === breadcrumbs.length - 1;
+
+
+    if(islast){
+      return(
+      <Typography key={i} color="text.primary">
+        {breadcrumb.name}
+      </Typography>
+      )
+    }
+
+    return(
+    <Link underline="hover" key={i} color="inherit" href={breadcrumb.path} onClick={handleClick}>
+      {breadcrumb.name}
+    </Link>
+    )
+  })
+
+
   return (
     <Stack spacing={2}>
       <PageTitle>{pageName}</PageTitle>
       <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-        <Link underline="hover" key="1" color="inherit" href="/" onClick={handleClick}>
-          MUI
-        </Link>
-        <Link underline="hover" key="2" color="inherit" href="/material-ui/getting-started/installation/" onClick={handleClick}>
-          Core
-        </Link>
-        <Typography key="3" color="text.primary">
-          Breadcrumb
-        </Typography>
+        {links()}
       </Breadcrumbs>
     </Stack>
   );

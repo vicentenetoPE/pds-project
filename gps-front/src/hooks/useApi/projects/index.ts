@@ -22,9 +22,10 @@ export const projects = {
             return null;
         }
     },
-    create:async()=>{
+    create:async(params:Partial<Project>)=>{
         try{
-            const response = await backEndHTTPClient.post(resource);
+            const response = await backEndHTTPClient.post(resource, params);
+            return response;
         }catch(e){
             console.log(e);
             return null;
@@ -33,6 +34,7 @@ export const projects = {
     update:async(id:number|string, params:Project)=>{
         try{
             const response = await backEndHTTPClient.patch(resource+id);
+            return response;
         }catch(e){
             console.log(e);
             return null;
@@ -41,6 +43,7 @@ export const projects = {
     delete:async(id:number|string)=>{
         try{
             const response = await backEndHTTPClient.delete(resource+id);
+            return response;
         }catch(e){
             console.log(e);
             return null;

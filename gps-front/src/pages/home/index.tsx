@@ -9,6 +9,10 @@ import { toast } from 'react-toastify'
 
 export const Home = () => {
   const [myprojects, setMyProjects]= useState<Project[]|null>(null);
+  const breadcrumbs = [
+    {name: "Home", path:"/projetos"},
+    {name: "Projetos", path:"/tarefas"}
+  ]
   
   useEffect(() => {
     const fetchProjects = async()=>{
@@ -21,8 +25,8 @@ export const Home = () => {
   
   return (
     <div>
-      <BreadCrumbs breadcrumbs={null}/>
-      <Filters/>
+      <BreadCrumbs breadcrumbs={breadcrumbs}/>
+      <Filters projects={myprojects} setProjects={setMyProjects}/>
       <ProjectWrapper>
         {myprojects && myprojects.map(project=>{
           return <ProjectCard project={project}/>

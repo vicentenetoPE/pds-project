@@ -12,12 +12,17 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const pages = [{title:'Home', link:'/'}, {title:'Organizações', link:'/organizacoes'},{ title:'Projetos', link:'/projetos'}, {title:'Tarefas', link:'/tarefas'}];
-const settings = ['Perfil', 'Sair'];
+const settings = [{title:'Perfil', link:'/perfil'}, {title:'Sair', link:'/'}];
+const pathsToHideHeader = ['/entrar', '/registrar']
 
 export function Header() {
+  const location = useLocation();
+  if ( pathsToHideHeader.includes(location.pathname)){
+    return null
+  }
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -152,9 +157,11 @@ export function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map((setting, i) => (
+                <MenuItem key={setting.title} onClick={()=>{
+                  navigate(setting.link)
+                }}>
+                  <Typography textAlign="center">{setting.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>

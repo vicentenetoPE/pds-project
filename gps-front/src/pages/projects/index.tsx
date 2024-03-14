@@ -12,11 +12,10 @@ export const Projects = () => {
         const response = await api.projects.getOne(id);
         setProjectDetails(response.data)
     }
-    fetchProjectDetails();
+    id && fetchProjectDetails();
   }, [id])
   
-
   return (
-    <div>{projectDetails?.id}{projectDetails.name}</div>
+    <div><h1>ID:{projectDetails?.id}</h1><h1>Título:{projectDetails?.name}</h1></div>
   )
 }

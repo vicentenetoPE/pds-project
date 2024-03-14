@@ -12,19 +12,29 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { Copyright } from '../../components/copyright';
+import { useApi } from '../../hooks/useApi';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const api = useApi();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const user = {
+      email: data.get('email') as string,
+      password: data.get('password') as string
+    }
+    const response = await api.auth.Login(user);
+    console.log(response.data)
+    if(response.data.access_token){
+      navigate('/')
+    }
   };
 
   return (
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component="main" sx={{ height: '100vh', zIndex:"1000", position:'absolute', top: 0, left:0 }}>
         <CssBaseline />
         <Grid
           item
@@ -97,7 +107,7 @@ export default function SignIn() {
                 </Grid>
                 <Grid item>
                   <Link href="/registrar" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                    {"Você não tem uma conta? Cadastre-se"}
                   </Link>
                 </Grid>
               </Grid>

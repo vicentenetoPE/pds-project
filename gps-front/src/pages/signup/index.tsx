@@ -13,16 +13,25 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Copyright } from '../../components/copyright';
+import { useApi } from '../../hooks/useApi';
+import { toast } from 'react-toastify';
 
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const api = useApi();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    const user = {
+      name: data.get('name') as string,
+      email: data.get('email') as string,
+      password: data.get('password') as string,
+    }
+    const response = await api.users.create(user);
+    if (response.data){
+      toast.success("usuário criado com sucesso");
+    }
   };
 
   return (
@@ -47,10 +56,10 @@ export default function SignUp() {
               <Grid item xs={12} sm={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
+                  id="name"
                   label="Nome"
                   autoFocus
                 />
@@ -87,7 +96,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/entrar" variant="body2">
                   Já tenho uma conta
                 </Link>
               </Grid>

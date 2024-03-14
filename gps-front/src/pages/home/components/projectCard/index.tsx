@@ -17,16 +17,20 @@ type Props = {
 
 export const ProjectCard = ({ project }: Props) => {
   const api = useApi();
+  const navigate = useNavigate();
+
 
   const handleDeleteProject = async (id: number | string) => {
     const response = await api.projects.delete(id);
+    console.log(response);
+    navigate(0)
+
   };
 
   const handleEditProject = async (id: number | string, project: Project) => {
     const response = await api.projects.update(id, project);
   };
 
-  const navigate = useNavigate();
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia sx={{ height: 140 }} image="/static/images/cards/contemplative-reptile.jpg" title="green iguana" />
@@ -45,7 +49,7 @@ export const ProjectCard = ({ project }: Props) => {
             <IconButton>
               <Edit />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={()=>handleDeleteProject(project.id)}>
               <Delete />
             </IconButton>
           </Box>
