@@ -29,7 +29,7 @@ export class ProjectsService {
     return this.projectRepository.update(id, updateProjectDto);
   }
 
-  remove(id: number) {
-    return this.projectRepository.delete(id);
+  async remove(id: number) {
+    return await this.projectRepository.delete(id);
   }
 }

@@ -1,4 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany } from 'typeorm';
+import { Organization } from '../organizations/entities/organization.entity';
+import { IsEmail, IsNotEmpty } from 'class-validator';
+
 
 @Entity('user')
 export class User {
@@ -16,8 +19,16 @@ export class User {
   @Column({ length: 500 })
   password: string;
 
+
   @Column({ length: 120, unique:true })
+  @IsEmail()
   email: string;
+
+  @OneToMany(()=>Organization, (Organization=> Organization.owner))
+  ownedOrganizations:Organization[];
+
+  @ManyToMany(()=>Organization, (Organization=>Organization.members))
+  organizations:Organization[];
 
   //todo add role
 }
