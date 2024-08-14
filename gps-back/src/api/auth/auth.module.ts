@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthGuard } from './auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { UsersService } from '../users/users.service';
 
 
 @Module({
@@ -16,7 +17,7 @@ import { APP_GUARD } from '@nestjs/core';
       inject: [ConfigService], 
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '60s' },
+        signOptions: { expiresIn: '6000s' },
       }),
     }),
   ],

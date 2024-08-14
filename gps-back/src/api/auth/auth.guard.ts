@@ -1,25 +1,26 @@
-import { Injectable, CanActivate } from "@nestjs/common";
-import {JwtService} from "@nestjs/jwt"
-import { Reflector } from "@nestjs/core";
-import { ExecutionContext } from "@nestjs/common";
-import { UnauthorizedException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { Request } from "express";
-import { IS_PUBLIC_KEY } from "./decorators/is-public.decorator";
-
+import { Injectable, CanActivate } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { Reflector } from '@nestjs/core';
+import { ExecutionContext } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Request } from 'express';
+import { IS_PUBLIC_KEY } from './decorators/is-public.decorator';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-
-    jwt_secret: string;
-  constructor(private jwtService: JwtService, private reflector: Reflector, private configService: ConfigService) {
+  jwt_secret: string;
+  constructor(
+    private jwtService: JwtService,
+    private reflector: Reflector,
+    private configService: ConfigService,
+    private authService:AuthService
+  ) {
     this.jwt_secret = this.configService.get<string>('JWT_SECRET');
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    // todo tirar isso
-    return true;
-    
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
@@ -37,10 +38,9 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.jwt_secret,
       });
-      // 💡 We're assigning the payload to the request object here
-      // so that we can access it in our route handlers
+      this.authService.userId=payload.sub
       request['user'] = payload;
-    } catch {
+    } catch(e:any) {
       throw new UnauthorizedException();
     }
     return true;
@@ -51,4 +51,3 @@ export class AuthGuard implements CanActivate {
     return type === 'Bearer' ? token : undefined;
   }
 }
-

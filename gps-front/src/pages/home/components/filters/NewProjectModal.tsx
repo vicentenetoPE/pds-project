@@ -1,19 +1,29 @@
-import { Button, FormLabel, Input } from '@mui/material'
+import { Button, FormLabel, Input, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Project } from '../../../../models/models/Project'
 import { useApi } from '../../../../hooks/useApi'
 import { toast } from 'react-toastify'
 
-export const NewProjectModal = () => {
+type Props = {
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  onCreateProject: () => Promise<void>
+
+}
+
+export const NewProjectModal = ({setOpen, onCreateProject}:Props) => {
     const [project, setProject] = useState<Partial<Project>|null>(null);
     const api = useApi();
 
+    const handleSuccess = ()=>{
+        toast.success("Projeto criado com sucesso");
+        onCreateProject();
+        setOpen(false);
+    }
 
     const createProject  = async()=>{
         const response = await api.projects.create(project);
-        console.log(response.status)
-        response.status == 201 && toast.success("Projeto criado com sucesso");
+        response.status == 201 && handleSuccess();
     }
 
   return (
@@ -22,6 +32,18 @@ export const NewProjectModal = () => {
         <Input placeholder='nome' type='text' onChange={(e)=>setProject(prevState=>{
             return {...prevState, name:e.target.value}
         })}></Input>
+
+        <TextField
+          placeholder="Breve descrição do projeto"
+          multiline
+          rows={2}
+          onChange={(e)=>setProject(prevState=>{
+            return {...prevState, shortDescription:e.target.value}
+        })}
+          sx={{width:"100%"}}
+   >
+            
+        </TextField>
         <Button variant="contained" onClick={createProject}>Criar</Button>
     </Container>
   )

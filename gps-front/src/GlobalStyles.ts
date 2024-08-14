@@ -6,24 +6,19 @@ export const GlobalStyles = createGlobalStyle`
         min-height:100vh;
         margin:0;
         padding:0;
-    }
-    #root{
-        @media (min-width: 600px) {
-            display: grid;
-            grid-template-rows: 1fr 12fr;
-            grid-template-areas: 
-            "nav"
-            "page-body";
-        }
+        background-color:#f2f2f2;
     }
 
+
     header {
-    grid-area: nav;
+    height:fit-content;
     }
 `;
 
 export const PageBody = styled.div`
   grid-area: page-body;
   padding:25px 50px;
+  display:flex;
+  flex-direction:column;
 
 `;

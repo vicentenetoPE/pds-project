@@ -1,5 +1,5 @@
 import React, { ChangeEvent, ReactNode, useEffect, useRef, useState } from "react";
-import { Button, IconButton, Input } from "@mui/material";
+import { Button, Grid, IconButton, Input } from "@mui/material";
 import { Container } from "./style";
 import InputAdornment from "@mui/material/InputAdornment";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -11,8 +11,9 @@ import { Project } from "../../../../models/models/Project";
 type Props = {
   projects:Project[]
   setProjects : any
+  onCreateProject: () => Promise<void>
 }
-export const Filters = ({projects, setProjects}:Props) => {
+export const Filters = ({projects, setProjects, onCreateProject}:Props) => {
   //todo fazer useModal
   const [open, setOpen] = useState<boolean>(false);
   const originalProjects = useRef<Project[]>(projects);
@@ -22,13 +23,16 @@ export const Filters = ({projects, setProjects}:Props) => {
 };
 
   return (
-    <Container>
-      <BasicModal open={open} setOpen={setOpen}>
-        <NewProjectModal />
+    <Grid container spacing={2}>
+      <BasicModal open={open} setOpen={setOpen} >
+        <NewProjectModal setOpen={setOpen} onCreateProject={onCreateProject}/>
       </BasicModal>
+      <Grid item xs={10} >
+
       <Input
         placeholder="Título do projeto"
         type="text"
+        fullWidth
         endAdornment={
           <InputAdornment position="end">
             <IconButton aria-label="toggle password visibility" edge="end">
@@ -38,9 +42,13 @@ export const Filters = ({projects, setProjects}:Props) => {
         }
         onChange={handleChange}
       ></Input>
+
+      </Grid>
+      <Grid item xs={2}>
       <Button onClick={() => setOpen(true)} variant="contained" startIcon={<Add />}>
         Adicionar Projeto
       </Button>
-    </Container>
+      </Grid>
+    </Grid>
   );
 };

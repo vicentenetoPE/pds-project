@@ -2,19 +2,22 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { GetUserId } from '../auth/decorators/get-user-id';
 
+@ApiTags('Tasks')
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.create(createTaskDto);
+  create(@GetUserId() userId: number, @Body() createTaskDto: CreateTaskDto) {
+    return this.tasksService.create(createTaskDto, userId);
   }
 
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  findAll(@GetUserId() userId: number) {
+    return this.tasksService.findAll(userId);
   }
 
   @Get(':id')

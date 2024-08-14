@@ -14,23 +14,33 @@ import Typography from '@mui/material/Typography';
 import { Copyright } from '../../components/copyright';
 import { useApi } from '../../hooks/useApi';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/auth/AuthContext';
 
-export default function SignIn() {
+export default function Login() {
   const api = useApi();
   const navigate = useNavigate();
+  const auth = React.useContext(AuthContext);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // const data = new FormData(event.currentTarget);
+    // const user = {
+    //   email: data.get('email') as string,
+    //   password: data.get('password') as string
+    // }
+    // const response = await api.auth.Login(user);
+    // if(response.data.access_token) {
+    //   localStorage.setItem("access_token", response.data.access_token)
+    //   navigate('/')
+    // } 
     const data = new FormData(event.currentTarget);
     const user = {
       email: data.get('email') as string,
       password: data.get('password') as string
     }
-    const response = await api.auth.Login(user);
-    console.log(response.data)
-    if(response.data.access_token){
-      navigate('/')
-    }
+    const res = await auth.signin(user.email, user.password);
+    console.log(res)
+    if(res) navigate('/');
   };
 
   return (

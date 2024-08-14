@@ -8,9 +8,12 @@ import {
   Post,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.entity';
-import { Public } from '../auth/decorators/is-public.decorator';
+import { User } from './entity/user.entity';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+
+@ApiBearerAuth()
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private userService: UsersService) {}
@@ -23,12 +26,6 @@ export class UsersController {
   @Get(':id')
   async findOne(@Param('id') id: number) {
     const res = await this.userService.findOneById(id);
-    return res;
-  }
-
-  @Post()
-  async create(@Body() params: { id: number; name: string }){
-    const res = await this.userService.create(new User(params));
     return res;
   }
 

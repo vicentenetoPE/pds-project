@@ -1,4 +1,4 @@
 export class CreateProjectDto {
-    id: number;
     name: string;
+    shortDescription:string;
 }

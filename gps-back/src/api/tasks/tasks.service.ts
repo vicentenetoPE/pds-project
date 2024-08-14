@@ -12,12 +12,14 @@ export class TasksService {
     private readonly taskRepository: Repository<Task>
 ){}
   
-  create(createTaskDto: CreateTaskDto) {
-    return this.taskRepository.save(createTaskDto);
+  create(createTaskDto: CreateTaskDto, userId: number) {
+    return this.taskRepository.save({...createTaskDto, createdBy:{id:userId}});
   }
 
-  findAll() {
-    return this.taskRepository.find();
+  findAll(userId: number) {
+    console.log(userId.toString())
+    
+    return this.taskRepository.find({where:{createdBy:{id:userId}}});
   }
 
   findOne(id: number) {

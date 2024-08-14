@@ -2,19 +2,23 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { GetUserId } from '../auth/decorators/get-user-id';
 
+
+@ApiTags('Projects')
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectsService.create(createProjectDto);
+  create(@Body() createProjectDto: CreateProjectDto, @GetUserId() userId: number) {
+    return this.projectsService.create(createProjectDto, userId);
   }
 
   @Get()
-  findAll() {
-    return this.projectsService.findAll();
+   findAll(@GetUserId() userId: number) {
+    return  this.projectsService.findAll(userId);
   }
 
   @Get(':id')

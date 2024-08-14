@@ -1,23 +1,48 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, ExecutionContext, Headers, HttpCode, Post, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/is-public.decorator';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from '../users/entity/user.entity';
+import { UsersService } from '../users/users.service';
+import { SignInDto } from './dto/sing-in.dto';
+import { ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
+
+@Public()
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
 
-  constructor(private authService: AuthService){
+  constructor(private authService: AuthService, private userService: UsersService){}  
 
-  }  
-  //Todo tirar o record string any e trocar por um dto
-  @HttpCode(HttpStatus.OK)
-  @Post('entrar')
-  signIn(@Body() signInDto: Record<string, any>): Promise<{access_token: string}> {
+  @Post('signin')
+  @HttpCode(200)
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  signIn(@Body() signInDto: SignInDto): Promise<{access_token: string}> {
     return this.authService.signIn(signInDto.email, signInDto.password)
   }
 
-  //todo tirar essa rota de criar usuario de users e colocar aqui
-  @Post('cadastrar')
-  create(): Promise<void> {
-    return Promise.resolve();
+  @HttpCode(201)
+  @Post('signup')
+  async create(@Body() params: CreateUserDto){
+    const res = await this.userService.create(new User(params))
+    return res;
+  }
+
+  @HttpCode(200)
+  @Post('validatetoken')
+  async validateToken(@Headers('Authorization') authHeader?: string, @Body() params?: {access_token:string}) {
+    let token ="";
+    if(params.access_token){
+      token = params.access_token;
+    }
+    if(!token && authHeader){
+      token= authHeader;
+    }
+    if (!token) {
+      throw new UnauthorizedException('Missing token');
+    }
+    const res = await this.authService.validateToken(token);
+    return res
   }
 }

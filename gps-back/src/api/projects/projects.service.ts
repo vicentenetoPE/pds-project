@@ -4,21 +4,23 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from './entities/project.entity';
 import { Repository } from 'typeorm';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../users/entity/user.entity';
 
 @Injectable()
 export class ProjectsService {
 
   constructor(
     @InjectRepository(Project)
-    private readonly projectRepository: Repository<Project>
+    private readonly projectRepository: Repository<Project>,
   ){}
 
-  create(createProjectDto: CreateProjectDto) {
-    return this.projectRepository.save(createProjectDto);
+  async create(createProjectDto: CreateProjectDto, ownerId:number) {
+    return this.projectRepository.save({...createProjectDto, owner:{id:ownerId}});
   }
 
-  findAll() {
-    return this.projectRepository.find();
+  findAll(userId:number) {
+    return this.projectRepository.find({where:{owner:{id:userId}}});
   }
 
   findOne(id: number) {

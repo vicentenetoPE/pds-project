@@ -1,18 +1,19 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './api/auth/auth.module';
 import { UsersModule } from './api/users/users.module';
 import { PGConfig } from './config/database.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { AppController } from './app.controller';
-import { AuthGuard } from './api/auth/auth.guard';
-import { APP_GUARD } from '@nestjs/core';
+
 import { TasksModule } from './api/tasks/tasks.module';
 import { ProjectsModule } from './api/projects/projects.module';
 import { OrganizationsModule } from './api/organizations/organizations.module';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtMiddleware } from './jwtmiddleware';
 
 @Module({
+
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     EventEmitterModule.forRoot(),
@@ -27,8 +28,7 @@ import { OrganizationsModule } from './api/organizations/organizations.module';
     ProjectsModule,
     OrganizationsModule
   ],
-  controllers: [AppController],
-
+  
 })
 export class AppModule {
 
