@@ -21,17 +21,17 @@ export class TasksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@GetUserId() userId: number, @Param('id') id: string) {
     return this.tasksService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+  update(@GetUserId() userId: number, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.tasksService.update(+id, updateTaskDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@GetUserId() userId: number, @Param('id') id: string) {
     return this.tasksService.remove(+id);
   }
 }

@@ -1,7 +1,9 @@
-import { Organization } from "src/api/organizations/entities/organization.entity";
-import { Task } from "src/api/tasks/entities/task.entity";
-import { User } from "src/api/users/entity/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { Organization } from 'src/api/organizations/entities/organization.entity';
+import { Task } from 'src/api/tasks/entities/task.entity';
+import { User } from 'src/api/users/entity/user.entity';
+import { Sprint } from 'src/api/sprints/sprints.entity';
+import { Release } from 'src/api/releases/release.entity';
 
 @Entity('project')
 export class Project {
@@ -14,15 +16,32 @@ export class Project {
     @Column()
     shortDescription: string;
 
-    @OneToMany(() =>Task, task=>task.project)
-    tasks:Task[];
+    @Column({ type: 'timestamp', nullable: true })
+    startDate: Date;
 
-    @ManyToOne(()=>Organization, (Organization=>Organization.projects))
-    @JoinColumn()
-    organization:Organization;
-    
-    @ManyToOne(()=>User, (User=>User.projects))
-    @JoinColumn()
-    owner:User;
+    @Column({ type: 'timestamp', nullable: true })
+    endDate: Date;
 
+    @Column({default: 'em progresso'})
+    status: string;
+
+    @Column('decimal', { precision: 10, scale: 2, nullable: true })
+    budget: number;
+
+    @ManyToOne(() => Organization, (organization) => organization.projects)
+    @JoinColumn()
+    organization: Organization;
+
+    @ManyToOne(() => User, (user) => user.ownedProjects)
+    @JoinColumn()
+    owner: User;
+
+    @OneToMany(() => Task, (task) => task.project)
+    tasks: Task[];
+
+    @OneToMany(() => Sprint, (sprint) => sprint.project)
+    sprints: Sprint[];
+
+    @OneToMany(() => Release, (release) => release.project)
+    releases: Release[];
 }

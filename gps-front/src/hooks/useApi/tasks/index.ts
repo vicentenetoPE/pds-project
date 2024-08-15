@@ -13,9 +13,9 @@ export const tasks = {
             return null;
         }
     },
-    getAll:async()=>{
+    getAll:async(projectId)=>{
         try{
-            const response = await backEndHTTPClient.get(resource);
+            const response = await backEndHTTPClient.get(resource+"?projectId="+projectId);
             return response;
         }catch(e){
             console.log(e);

@@ -4,37 +4,30 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToMany,
+  JoinTable,
   CreateDateColumn,
   UpdateDateColumn,
-  Unique
 } from 'typeorm';
-import { Organization } from '../../organizations/entities/organization.entity';
+import { Organization } from 'src/api/organizations/entities/organization.entity';
 import { Project } from 'src/api/projects/entities/project.entity';
 import { Task } from 'src/api/tasks/entities/task.entity';
 
-type Role = 'admin'|'user';
-
 @Entity('user')
 export class User {
-  constructor(partial: Partial<User>, role: Role='user') {
-    Object.assign(this, partial);
-    this.role = role;
-  }
-
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ length: 200 })
   name: string;
 
+  @Column({ length: 120, unique: true })
+  email: string;
+
   @Column({ length: 120 })
   password: string;
 
-  @Column()
-  role: Role;
-
-  @Column({ length: 120, unique: true })
-  email: string;
+  @Column({ length: 20 })
+  role: string;  // e.g., 'admin' | 'user'
 
   @CreateDateColumn()
   createdAt: Date;
@@ -42,18 +35,20 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Organization, (Organization) => Organization.owner)
+  @OneToMany(() => Organization, (organization) => organization.owner)
   ownedOrganizations: Organization[];
+
+  @ManyToMany(() => Organization, (organization) => organization.members)
+  @JoinTable()
+  organizations: Organization[];
+
+  @OneToMany(() => Project, (project) => project.owner)
+  ownedProjects: Project[];
 
   @OneToMany(() => Task, (task) => task.createdBy)
   createdTasks: Task[];
 
-  @ManyToMany(() => Organization, (Organization) => Organization.members)
-  organizations: Organization[];
-
-  @OneToMany(() => Project, (project) => project.owner)
-  projects: Project[]
+  @ManyToMany(() => Task, (task) => task.assignees)
+  @JoinTable()
+  assignedTasks: Task[];
 }
-
-
-

@@ -5,15 +5,16 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { Add } from "@mui/icons-material";
 import { BasicModal } from "../../../../components/modal";
-import {  NewTaskModal } from "./NewTaskModal";
 import { Task } from "../../../../models/models/Task";
+import { NewTaskModal } from "../NewTaskModal";
 
 type Props = {
   task:Task[]
   setTasks : any
   onCreateTask: () => Promise<void>
+  projectId: number
 }
-export const Filters = ({task, setTasks, onCreateTask}:Props) => {
+export const Filters = ({task, setTasks, onCreateTask, projectId}:Props) => {
   //todo fazer useModal
   const [open, setOpen] = useState<boolean>(false);
   const originalTasks = useRef<Task[]>(task);
@@ -25,7 +26,7 @@ export const Filters = ({task, setTasks, onCreateTask}:Props) => {
   return (
     <Grid container spacing={2}>
       <BasicModal open={open} setOpen={setOpen} >
-        <NewTaskModal setOpen={setOpen} onCreateTask={onCreateTask}/>
+        <NewTaskModal setOpen={setOpen} onCreateTask={onCreateTask} projectId={projectId}/>
       </BasicModal>
       <Grid item xs={10} >
 

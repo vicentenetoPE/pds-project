@@ -11,6 +11,9 @@ import { ProjectsModule } from './api/projects/projects.module';
 import { OrganizationsModule } from './api/organizations/organizations.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtMiddleware } from './jwtmiddleware';
+import { zip } from 'rxjs';
+import { SprintsModule } from './api/sprints/sprints.module';
+import { ReleasesModule } from './api/releases/releases.module';
 
 @Module({
 
@@ -26,6 +29,8 @@ import { JwtMiddleware } from './jwtmiddleware';
     UsersModule,
     TasksModule,
     ProjectsModule,
+    SprintsModule,
+    ReleasesModule,  
     OrganizationsModule
   ],
   
