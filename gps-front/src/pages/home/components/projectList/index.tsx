@@ -6,15 +6,42 @@ import { Project } from "../../../../models/models/Project";
 import { Typography, Box, IconButton, Chip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { grey } from "@mui/material/colors";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { BasicModal } from "../../../../components/modal";
+import { NewProjectModal } from "../NewProjectModal";
+import { useApi } from "../../../../hooks/useApi";
+import { toast } from "react-toastify";
 
 type Props = {
   projectList: Project[];
+  onCreateProject: () => Promise<void>;
 };
 
-export default function ProjectList({ projectList }: Props) {
+export default function ProjectList({ projectList, onCreateProject }: Props) {
   const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
+  const [selectedProject, setSelectedProject] = React.useState<Partial<Project> | null>(null);
+  const api = useApi();
+
+  const handleEdit = (e: React.MouseEvent, project: Project) => {
+    e.stopPropagation();
+    setSelectedProject(project); // Define o projeto a ser editado
+    setOpen(true); // Abre o modal para edição
+  };
+
+  const handleDelete = async (e: React.MouseEvent, project: Project) => {
+    e.stopPropagation();
+    if (window.confirm(`Tem certeza que deseja deletar o projeto ${project.name}?`)) {
+      const response = await api.projects.delete(project.id);
+      if (response.status === 200) {
+        toast.success("Projeto deletado com sucesso!");
+        onCreateProject(); // Atualiza a lista de projetos após a deleção
+      } else {
+        toast.error("Erro ao deletar o projeto.");
+      }
+    }
+  };
 
   if (projectList.length === 0) {
     return (
@@ -25,30 +52,37 @@ export default function ProjectList({ projectList }: Props) {
   }
 
   return (
-    <List sx={{ width: "100%", display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+    <List sx={{ width: "100%", display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
+      <BasicModal open={open} setOpen={setOpen}>
+        <NewProjectModal
+          setOpen={setOpen}
+          onCreateProject={onCreateProject}
+          initialData={selectedProject} // Passa o projeto selecionado para o modal
+        />
+      </BasicModal>
       {projectList.map((project) => (
         <ListItem
           key={project.id}
           onClick={() => navigate(`/projetos/${project.id}`)}
           sx={{
-            marginBottom: '20px',
-            width: '48%',
+            marginBottom: "20px",
+            width: "48%",
             bgcolor: "background.paper",
-            padding: '16px',
-            borderRadius: '8px',
-            ":hover": { cursor: 'pointer', bgcolor: grey[300] },
+            padding: "16px",
+            borderRadius: "8px",
+            ":hover": { cursor: "pointer", bgcolor: grey[300] },
           }}
         >
-          <Box sx={{ width: '100%' }}>
+          <Box sx={{ width: "100%" }}>
             <ListItemText
               primary={
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Typography variant="h6">{project.name}</Typography>
                   <Box>
-                    <IconButton onClick={(e) => { e.stopPropagation(); /* Implementar edição */ }}>
+                    <IconButton onClick={(e) => handleEdit(e, project)}>
                       <EditIcon />
                     </IconButton>
-                    <IconButton onClick={(e) => { e.stopPropagation(); /* Implementar exclusão */ }}>
+                    <IconButton onClick={(e) => handleDelete(e, project)}>
                       <DeleteIcon />
                     </IconButton>
                   </Box>

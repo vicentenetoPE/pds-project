@@ -8,10 +8,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 
 import { TasksModule } from './api/tasks/tasks.module';
 import { ProjectsModule } from './api/projects/projects.module';
-import { OrganizationsModule } from './api/organizations/organizations.module';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtMiddleware } from './jwtmiddleware';
-import { zip } from 'rxjs';
 import { SprintsModule } from './api/sprints/sprints.module';
 import { ReleasesModule } from './api/releases/releases.module';
 
@@ -31,10 +27,6 @@ import { ReleasesModule } from './api/releases/releases.module';
     ProjectsModule,
     SprintsModule,
     ReleasesModule,  
-    OrganizationsModule
   ],
-  
 })
-export class AppModule {
-
-}
+export class AppModule {}

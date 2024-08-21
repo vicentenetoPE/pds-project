@@ -31,9 +31,9 @@ export const projects = {
             return null;
         }
     },
-    update:async(id:number|string, params:Project)=>{
+    update:async(id:number|string, params:Partial<Project>)=>{
         try{
-            const response = await backEndHTTPClient.patch(resource+id);
+            const response = await backEndHTTPClient.patch(resource+id, params);
             return response;
         }catch(e){
             console.log(e);

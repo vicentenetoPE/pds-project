@@ -12,7 +12,7 @@ export class TasksService {
     @InjectRepository(Task)
     private readonly taskRepository: Repository<Task>,
     private projectService: ProjectsService,
-  ){}
+  ) {}
 
   async create(createTaskDto: CreateTaskDto, userId: number) {
     const project = await this.projectService.findOne(createTaskDto.projectId);
@@ -25,9 +25,7 @@ export class TasksService {
 
   findAll(userId: number) {
     return this.taskRepository.find({
-      where: [
-        { createdBy: { id: userId } },       { assignees: { id: userId } }  
-      ],
+      where: [{ createdBy: { id: userId } }, { assignees: { id: userId } }],
       relations: ['assignees'],
     });
   }

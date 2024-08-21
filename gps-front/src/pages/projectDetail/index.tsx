@@ -20,7 +20,7 @@ export const ProjectDetail = () => {
 
   const tasksApi = useApi().tasks;
   const projectApi = useApi().projects;
-  const { id} = useParams();
+  const { id } = useParams();
 
   const fetchTasks = async () => {
     const response = await tasksApi.getAll(id);
@@ -30,19 +30,25 @@ export const ProjectDetail = () => {
   const fetchProject = async () => {
     const response = await projectApi.getOne(id);
     response && setProject(response.data);
-  }
+  };
 
   useEffect(() => {
     fetchTasks();
     fetchProject();
   }, []);
 
-  if (!tasks || !project) return <CircularProgressWithLabel value={50} label="Carregando tarefas..." />;
+  if (!project || !tasks)
+    return (
+      <Container style={{height:"100%", width:"100%", display:"flex", justifyContent: "center", margin:"auto", alignItems:'center'}}>
+        <CircularProgress />
+        <Typography variant="body1">Carregando...</Typography>
+      </Container>
+    );
 
   return (
     <Container>
       {/* Resumo do Projeto */}
-      <Card sx={{ padding: "20px", marginBottom: "20px", display: "flex", justifyContent:"space-between" }}>
+      <Card sx={{ padding: "20px", marginBottom: "20px", display: "flex", justifyContent: "space-between" }}>
         <div>
           <Typography variant="h4" gutterBottom>
             {project.name}
@@ -52,7 +58,7 @@ export const ProjectDetail = () => {
             {project.shortDescription}
           </Typography>
         </div>
-        <div style={{display:"flex", gap: "25px", alignItems:"center"}}>
+        <div style={{ display: "flex", gap: "25px", alignItems: "center" }}>
           <div>
             <Typography variant="body2" color="text.secondary">
               Data de Início:

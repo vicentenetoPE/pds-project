@@ -16,7 +16,7 @@ export class Task {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column({ length: 50 })
+  @Column('enum', { enum: ['backlog', 'ready', 'doing','review', 'done'], default: 'backlog' })
   status: string;
 
   @Column({ type: 'int', nullable: true })

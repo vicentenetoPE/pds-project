@@ -52,7 +52,7 @@ export const Home = () => {
         <CircularProgress sx={{ alignSelf: 'center' }} />
       ) : (
         <ProjectWrapper>
-          <ProjectList projectList={currentProjects} />
+          <ProjectList projectList={currentProjects} onCreateProject={fetchProjects}/>
           <Paginator
             totalItems={myprojects.length}
             itemsPerPage={projectsPerPage}

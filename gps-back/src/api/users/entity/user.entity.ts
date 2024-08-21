@@ -27,20 +27,13 @@ export class User {
   password: string;
 
   @Column({ length: 20 })
-  role: string;  // e.g., 'admin' | 'user'
+  role: string;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @OneToMany(() => Organization, (organization) => organization.owner)
-  ownedOrganizations: Organization[];
-
-  @ManyToMany(() => Organization, (organization) => organization.members)
-  @JoinTable()
-  organizations: Organization[];
 
   @OneToMany(() => Project, (project) => project.owner)
   ownedProjects: Project[];
@@ -51,4 +44,7 @@ export class User {
   @ManyToMany(() => Task, (task) => task.assignees)
   @JoinTable()
   assignedTasks: Task[];
+
+  @ManyToMany(() => Project, (project) => project.members)
+  projects: Project[];
 }

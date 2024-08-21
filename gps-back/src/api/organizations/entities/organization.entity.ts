@@ -11,15 +11,12 @@ export class Organization {
     @Column()
     name:string;
 
-    @ManyToOne(()=>User, (User=>User.ownedOrganizations))
-    @JoinColumn()
-    owner:Relation<User>;
+    // @ManyToOne(()=>User, (User=>User.ownedOrganizations))
+    // @JoinColumn()
+    // owner:Relation<User>;
 
     
-    @ManyToMany(()=>User, (User=>User.organizations))
-    @JoinTable()
-    members: User[];
-
-    @OneToMany(()=>Project, (Project=>Project.organization))
-    projects:Relation<Project[]>;
+    // @ManyToMany(()=>User, (User=>User.organizations))
+    // @JoinTable()
+    // members: User[];
 }

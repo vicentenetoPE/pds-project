@@ -4,8 +4,6 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from './entities/project.entity';
 import { Repository } from 'typeorm';
-import { AuthService } from '../auth/auth.service';
-import { User } from '../users/entity/user.entity';
 
 @Injectable()
 export class ProjectsService {
@@ -19,8 +17,14 @@ export class ProjectsService {
     return this.projectRepository.save({...createProjectDto, owner:{id:ownerId}});
   }
 
-  findAll(userId:number) {
-    return this.projectRepository.find({where:{owner:{id:userId}}});
+  async findAll(userId: number) {
+    return await this.projectRepository.find({
+      where: [
+        { owner: { id: userId } },
+        { members: { id: userId } }
+      ],
+      relations: ['owner', 'members'],
+    });
   }
 
   findOne(id: number) {

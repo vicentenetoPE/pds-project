@@ -11,9 +11,12 @@ function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
   console.log("You clicked a breadcrumb.");
 }
 //todo refactor
-const getPageName = (breadcrumbs) => {
-  return "Projetos";
-};
+function getPageName(breadcrumbs: any) {
+  if (breadcrumbs) {
+    return breadcrumbs[breadcrumbs.length - 1].name;
+  }
+  return "";
+}
 type Breadcrumb ={
   name:string
   path: string

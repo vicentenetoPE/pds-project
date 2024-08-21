@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn, JoinTable, ManyToMany } from 'typeorm';
 import { Organization } from 'src/api/organizations/entities/organization.entity';
 import { Task } from 'src/api/tasks/entities/task.entity';
 import { User } from 'src/api/users/entity/user.entity';
@@ -28,10 +28,6 @@ export class Project {
     @Column('decimal', { precision: 10, scale: 2, nullable: true })
     budget: number;
 
-    @ManyToOne(() => Organization, (organization) => organization.projects)
-    @JoinColumn()
-    organization: Organization;
-
     @ManyToOne(() => User, (user) => user.ownedProjects)
     @JoinColumn()
     owner: User;
@@ -44,4 +40,8 @@ export class Project {
 
     @OneToMany(() => Release, (release) => release.project)
     releases: Release[];
+
+    @ManyToMany(() => User, (user) => user.projects)
+    @JoinTable()
+    members: User[];
 }

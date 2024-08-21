@@ -1,12 +1,12 @@
 import { Button, Input, TextField, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Task } from '../../../models/models/Task';
-import { User } from '../../../models/user';
+import { Task, TaskStatus } from '../../../models/models/Task';
 import { Release } from '../../../models/models/Release';
 import { Sprint } from '../../../models/models/Sprint';
 import { useApi } from '../../../hooks/useApi';
 import { toast } from 'react-toastify';
+import { User } from '../../../models/models/User';
 
 type Props = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,14 +15,7 @@ type Props = {
 };
 
 export const NewTaskModal = ({ setOpen, onCreateTask, projectId }: Props) => {
-  const [task, setTask] = useState<Partial<Task>>({
-    name: '',
-    description: '',
-    status: 'to do',
-    priority: 1,
-    estimatedTime: 0,
-    loggedTime: 0,
-  });
+  const [task, setTask] = useState<Partial<Task>|null>({});
   const [users, setUsers] = useState<User[]>([]);
   const [sprints, setSprints] = useState<Sprint[]>([]);
   const [releases, setReleases] = useState<Release[]>([]);
@@ -55,7 +48,6 @@ export const NewTaskModal = ({ setOpen, onCreateTask, projectId }: Props) => {
       <Input
         placeholder="Nome"
         type="text"
-        value={task.name}
         onChange={(e) =>
           setTask((prevState) => ({
             ...prevState,
@@ -81,24 +73,24 @@ export const NewTaskModal = ({ setOpen, onCreateTask, projectId }: Props) => {
       <FormControl fullWidth>
         <InputLabel>Status</InputLabel>
         <Select
-          value={task.status}
           onChange={(e) =>
             setTask((prevState) => ({
               ...prevState,
-              status: e.target.value as string,
+              status: e.target.value as TaskStatus,
             }))
           }
         >
-          <MenuItem value="to do">To Do</MenuItem>
-          <MenuItem value="in progress">In Progress</MenuItem>
-          <MenuItem value="done">Done</MenuItem>
+          <MenuItem value="backlog">Backlog</MenuItem>
+          <MenuItem value="ready">Pronto</MenuItem>
+          <MenuItem value="doing">Fazendo</MenuItem>
+          <MenuItem value="review">Para revisão</MenuItem>
+          <MenuItem value="done">Feito</MenuItem>
         </Select>
       </FormControl>
 
       <Input
         placeholder="Prioridade"
         type="number"
-        value={task.priority || 0}
         onChange={(e) =>
           setTask((prevState) => ({
             ...prevState,
@@ -110,7 +102,6 @@ export const NewTaskModal = ({ setOpen, onCreateTask, projectId }: Props) => {
       <Input
         placeholder="Tempo Estimado"
         type="number"
-        value={task.estimatedTime || 0}
         onChange={(e) =>
           setTask((prevState) => ({
             ...prevState,
@@ -122,7 +113,6 @@ export const NewTaskModal = ({ setOpen, onCreateTask, projectId }: Props) => {
       <Input
         placeholder="Tempo Registrado"
         type="number"
-        value={task.loggedTime || 0}
         onChange={(e) =>
           setTask((prevState) => ({
             ...prevState,
@@ -142,8 +132,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 25px;
-  align-items: center;
+  align-items: stretch;
   width:400px;
+  text-align: center; 
   button {
     align-self: stretch;
   }

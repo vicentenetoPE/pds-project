@@ -7,18 +7,19 @@ export const GlobalStyles = createGlobalStyle`
         margin:0;
         padding:0;
         background-color:#f2f2f2;
+        display:flex;
+        flex-direction:column;
     }
-
-
     header {
     height:fit-content;
     }
 `;
 
 export const PageBody = styled.div`
-  grid-area: page-body;
   padding:25px 50px;
   display:flex;
   flex-direction:column;
+  flex:1;
+  height:100%;
 
 `;
